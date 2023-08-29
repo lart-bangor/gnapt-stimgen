@@ -2,6 +2,7 @@ from ..types import AudioStimulus, PictureStimulus
 
 
 pstimlist: list[PictureStimulus] = [
+    # POSITIVE PICTURE STIMULI
     #               Filename,    Description,       Valence
     PictureStimulus("pos01.jpg", "Positive Pic 01", "pos"),
     PictureStimulus("pos02.jpg", "Positive Pic 02", "pos"),
@@ -13,7 +14,7 @@ pstimlist: list[PictureStimulus] = [
     PictureStimulus("pos08.jpg", "Positive Pic 08", "pos"),
     PictureStimulus("pos09.jpg", "Positive Pic 09", "pos"),
     PictureStimulus("pos10.jpg", "Positive Pic 10", "pos"),
-
+    #               Filename,    Description,       Valence
     PictureStimulus("pos11.jpg", "Positive Pic 11", "pos"),
     PictureStimulus("pos12.jpg", "Positive Pic 12", "pos"),
     PictureStimulus("pos13.jpg", "Positive Pic 13", "pos"),
@@ -23,7 +24,7 @@ pstimlist: list[PictureStimulus] = [
     PictureStimulus("pos17.jpg", "Positive Pic 17", "pos"),
     PictureStimulus("pos18.jpg", "Positive Pic 18", "pos"),
     PictureStimulus("pos19.jpg", "Positive Pic 19", "pos"),
-
+    #               Filename,    Description,       Valence
     PictureStimulus("pos20.jpg", "Positive Pic 20", "pos"),
     PictureStimulus("pos21.jpg", "Positive Pic 21", "pos"),
     PictureStimulus("pos22.jpg", "Positive Pic 22", "pos"),
@@ -35,7 +36,7 @@ pstimlist: list[PictureStimulus] = [
     PictureStimulus("pos28.jpg", "Positive Pic 28", "pos"),
     PictureStimulus("pos29.jpg", "Positive Pic 29", "pos"),
     PictureStimulus("pos30.jpg", "Positive Pic 30", "pos"),
-
+    #               Filename,    Description,       Valence
     PictureStimulus("pos31.jpg", "Positive Pic 31", "pos"),
     PictureStimulus("pos32.jpg", "Positive Pic 32", "pos"),
     PictureStimulus("pos33.jpg", "Positive Pic 33", "pos"),
@@ -46,7 +47,8 @@ pstimlist: list[PictureStimulus] = [
     PictureStimulus("pos38.jpg", "Positive Pic 38", "pos"),
     PictureStimulus("pos39.jpg", "Positive Pic 39", "pos"),
     PictureStimulus("pos40.jpg", "Positive Pic 40", "pos"),
-
+    # NEGATIVE PICTURE STIMULI
+    #               Filename,    Description,       Valence
     PictureStimulus("neg01.jpg", "Negative Pic 01", "neg"),
     PictureStimulus("neg02.jpg", "Negative Pic 02", "neg"),
     PictureStimulus("neg03.jpg", "Negative Pic 03", "neg"),
@@ -57,7 +59,7 @@ pstimlist: list[PictureStimulus] = [
     PictureStimulus("neg08.jpg", "Negative Pic 08", "neg"),
     PictureStimulus("neg09.jpg", "Negative Pic 09", "neg"),
     PictureStimulus("neg10.jpg", "Negative Pic 10", "neg"),
-
+    #               Filename,    Description,       Valence
     PictureStimulus("neg11.jpg", "Negative Pic 11", "neg"),
     PictureStimulus("neg12.jpg", "Negative Pic 12", "neg"),
     PictureStimulus("neg13.jpg", "Negative Pic 13", "neg"),
@@ -68,7 +70,7 @@ pstimlist: list[PictureStimulus] = [
     PictureStimulus("neg18.jpg", "Negative Pic 18", "neg"),
     PictureStimulus("neg19.jpg", "Negative Pic 19", "neg"),
     PictureStimulus("neg20.jpg", "Negative Pic 20", "neg"),
-
+    #               Filename,    Description,       Valence
     PictureStimulus("neg21.jpg", "Negative Pic 21", "neg"),
     PictureStimulus("neg22.jpg", "Negative Pic 22", "neg"),
     PictureStimulus("neg23.jpg", "Negative Pic 23", "neg"),
@@ -79,7 +81,7 @@ pstimlist: list[PictureStimulus] = [
     PictureStimulus("neg28.jpg", "Negative Pic 28", "neg"),
     PictureStimulus("neg29.jpg", "Negative Pic 29", "neg"),
     PictureStimulus("neg30.jpg", "Negative Pic 30", "neg"),
-
+    #               Filename,    Description,       Valence
     PictureStimulus("neg31.jpg", "Negative Pic 31", "neg"),
     PictureStimulus("neg32.jpg", "Negative Pic 32", "neg"),
     PictureStimulus("neg33.jpg", "Negative Pic 33", "neg"),
@@ -97,6 +99,7 @@ pstimdict: dict[str, PictureStimulus] = {
 }
 
 astimlist: list[AudioStimulus] = [
+    # ENGLISH AUDIO STIMULI
     #             Filename,    Description,        Lang,  Compatible positive picture stimuli,                                                              Compatible negative picture stimuli
     AudioStimulus("Eng01.wav", "English Audio 01", "Eng", [pstimdict["pos01.jpg"], pstimdict["pos11.jpg"], pstimdict["pos21.jpg"], pstimdict["pos31.jpg"]], [pstimdict["neg01.jpg"], pstimdict["neg11.jpg"], pstimdict["neg21.jpg"], pstimdict["neg31.jpg"]]),
     AudioStimulus("Eng02.wav", "English Audio 02", "Eng", [pstimdict["pos02.jpg"], pstimdict["pos12.jpg"], pstimdict["pos22.jpg"], pstimdict["pos32.jpg"]], [pstimdict["neg02.jpg"], pstimdict["neg12.jpg"], pstimdict["neg22.jpg"], pstimdict["neg32.jpg"]]),
@@ -108,7 +111,7 @@ astimlist: list[AudioStimulus] = [
     AudioStimulus("Eng08.wav", "English Audio 08", "Eng", [pstimdict["pos08.jpg"], pstimdict["pos18.jpg"], pstimdict["pos28.jpg"], pstimdict["pos38.jpg"]], [pstimdict["neg08.jpg"], pstimdict["neg18.jpg"], pstimdict["neg28.jpg"], pstimdict["neg38.jpg"]]),
     AudioStimulus("Eng09.wav", "English Audio 09", "Eng", [pstimdict["pos09.jpg"], pstimdict["pos19.jpg"], pstimdict["pos29.jpg"], pstimdict["pos39.jpg"]], [pstimdict["neg09.jpg"], pstimdict["neg19.jpg"], pstimdict["neg29.jpg"], pstimdict["neg39.jpg"]]),
     AudioStimulus("Eng10.wav", "English Audio 10", "Eng", [pstimdict["pos10.jpg"], pstimdict["pos20.jpg"], pstimdict["pos30.jpg"], pstimdict["pos40.jpg"]], [pstimdict["neg10.jpg"], pstimdict["neg20.jpg"], pstimdict["neg30.jpg"], pstimdict["neg40.jpg"]]),
-
+    #             Filename,    Description,        Lang,  Compatible positive picture stimuli,                                                              Compatible negative picture stimuli
     AudioStimulus("Eng11.wav", "English Audio 11", "Eng", [pstimdict["pos01.jpg"], pstimdict["pos11.jpg"], pstimdict["pos21.jpg"], pstimdict["pos31.jpg"]], [pstimdict["neg01.jpg"], pstimdict["neg11.jpg"], pstimdict["neg21.jpg"], pstimdict["neg31.jpg"]]),
     AudioStimulus("Eng12.wav", "English Audio 12", "Eng", [pstimdict["pos02.jpg"], pstimdict["pos12.jpg"], pstimdict["pos22.jpg"], pstimdict["pos32.jpg"]], [pstimdict["neg02.jpg"], pstimdict["neg12.jpg"], pstimdict["neg22.jpg"], pstimdict["neg32.jpg"]]),
     AudioStimulus("Eng13.wav", "English Audio 13", "Eng", [pstimdict["pos03.jpg"], pstimdict["pos13.jpg"], pstimdict["pos23.jpg"], pstimdict["pos33.jpg"]], [pstimdict["neg03.jpg"], pstimdict["neg13.jpg"], pstimdict["neg23.jpg"], pstimdict["neg33.jpg"]]),
@@ -119,7 +122,7 @@ astimlist: list[AudioStimulus] = [
     AudioStimulus("Eng18.wav", "English Audio 18", "Eng", [pstimdict["pos08.jpg"], pstimdict["pos18.jpg"], pstimdict["pos28.jpg"], pstimdict["pos38.jpg"]], [pstimdict["neg08.jpg"], pstimdict["neg18.jpg"], pstimdict["neg28.jpg"], pstimdict["neg38.jpg"]]),
     AudioStimulus("Eng19.wav", "English Audio 19", "Eng", [pstimdict["pos09.jpg"], pstimdict["pos19.jpg"], pstimdict["pos29.jpg"], pstimdict["pos39.jpg"]], [pstimdict["neg09.jpg"], pstimdict["neg19.jpg"], pstimdict["neg29.jpg"], pstimdict["neg39.jpg"]]),
     AudioStimulus("Eng20.wav", "English Audio 20", "Eng", [pstimdict["pos10.jpg"], pstimdict["pos20.jpg"], pstimdict["pos30.jpg"], pstimdict["pos40.jpg"]], [pstimdict["neg10.jpg"], pstimdict["neg20.jpg"], pstimdict["neg30.jpg"], pstimdict["neg40.jpg"]]),
-
+    #             Filename,    Description,        Lang,  Compatible positive picture stimuli,                                                              Compatible negative picture stimuli
     AudioStimulus("Eng21.wav", "English Audio 21", "Eng", [pstimdict["pos01.jpg"], pstimdict["pos11.jpg"], pstimdict["pos21.jpg"], pstimdict["pos31.jpg"]], [pstimdict["neg01.jpg"], pstimdict["neg11.jpg"], pstimdict["neg21.jpg"], pstimdict["neg31.jpg"]]),
     AudioStimulus("Eng22.wav", "English Audio 22", "Eng", [pstimdict["pos02.jpg"], pstimdict["pos12.jpg"], pstimdict["pos22.jpg"], pstimdict["pos32.jpg"]], [pstimdict["neg02.jpg"], pstimdict["neg12.jpg"], pstimdict["neg22.jpg"], pstimdict["neg32.jpg"]]),
     AudioStimulus("Eng23.wav", "English Audio 23", "Eng", [pstimdict["pos03.jpg"], pstimdict["pos13.jpg"], pstimdict["pos23.jpg"], pstimdict["pos33.jpg"]], [pstimdict["neg03.jpg"], pstimdict["neg13.jpg"], pstimdict["neg23.jpg"], pstimdict["neg33.jpg"]]),
@@ -130,7 +133,7 @@ astimlist: list[AudioStimulus] = [
     AudioStimulus("Eng28.wav", "English Audio 28", "Eng", [pstimdict["pos08.jpg"], pstimdict["pos18.jpg"], pstimdict["pos28.jpg"], pstimdict["pos38.jpg"]], [pstimdict["neg08.jpg"], pstimdict["neg18.jpg"], pstimdict["neg28.jpg"], pstimdict["neg38.jpg"]]),
     AudioStimulus("Eng29.wav", "English Audio 29", "Eng", [pstimdict["pos09.jpg"], pstimdict["pos19.jpg"], pstimdict["pos29.jpg"], pstimdict["pos39.jpg"]], [pstimdict["neg09.jpg"], pstimdict["neg19.jpg"], pstimdict["neg29.jpg"], pstimdict["neg39.jpg"]]),
     AudioStimulus("Eng30.wav", "English Audio 30", "Eng", [pstimdict["pos10.jpg"], pstimdict["pos20.jpg"], pstimdict["pos30.jpg"], pstimdict["pos40.jpg"]], [pstimdict["neg10.jpg"], pstimdict["neg20.jpg"], pstimdict["neg30.jpg"], pstimdict["neg40.jpg"]]),
-
+    #             Filename,    Description,        Lang,  Compatible positive picture stimuli,                                                              Compatible negative picture stimuli
     AudioStimulus("Eng31.wav", "English Audio 31", "Eng", [pstimdict["pos01.jpg"], pstimdict["pos11.jpg"], pstimdict["pos21.jpg"], pstimdict["pos31.jpg"]], [pstimdict["neg01.jpg"], pstimdict["neg11.jpg"], pstimdict["neg21.jpg"], pstimdict["neg31.jpg"]]),
     AudioStimulus("Eng32.wav", "English Audio 32", "Eng", [pstimdict["pos02.jpg"], pstimdict["pos12.jpg"], pstimdict["pos22.jpg"], pstimdict["pos32.jpg"]], [pstimdict["neg02.jpg"], pstimdict["neg12.jpg"], pstimdict["neg22.jpg"], pstimdict["neg32.jpg"]]),
     AudioStimulus("Eng33.wav", "English Audio 33", "Eng", [pstimdict["pos03.jpg"], pstimdict["pos13.jpg"], pstimdict["pos23.jpg"], pstimdict["pos33.jpg"]], [pstimdict["neg03.jpg"], pstimdict["neg13.jpg"], pstimdict["neg23.jpg"], pstimdict["neg33.jpg"]]),
@@ -141,6 +144,51 @@ astimlist: list[AudioStimulus] = [
     AudioStimulus("Eng38.wav", "English Audio 38", "Eng", [pstimdict["pos08.jpg"], pstimdict["pos18.jpg"], pstimdict["pos28.jpg"], pstimdict["pos38.jpg"]], [pstimdict["neg08.jpg"], pstimdict["neg18.jpg"], pstimdict["neg28.jpg"], pstimdict["neg38.jpg"]]),
     AudioStimulus("Eng39.wav", "English Audio 39", "Eng", [pstimdict["pos09.jpg"], pstimdict["pos19.jpg"], pstimdict["pos29.jpg"], pstimdict["pos39.jpg"]], [pstimdict["neg09.jpg"], pstimdict["neg19.jpg"], pstimdict["neg29.jpg"], pstimdict["neg39.jpg"]]),
     AudioStimulus("Eng40.wav", "English Audio 40", "Eng", [pstimdict["pos10.jpg"], pstimdict["pos20.jpg"], pstimdict["pos30.jpg"], pstimdict["pos40.jpg"]], [pstimdict["neg10.jpg"], pstimdict["neg20.jpg"], pstimdict["neg30.jpg"], pstimdict["neg40.jpg"]]),
+    # WELSH AUDIO STIMULI
+    #             Filename,    Description,      Lang,  Compatible positive picture stimuli,                                                              Compatible negative picture stimuli
+    AudioStimulus("Cym01.wav", "Welsh Audio 01", "Cym", [pstimdict["pos01.jpg"], pstimdict["pos11.jpg"], pstimdict["pos21.jpg"], pstimdict["pos31.jpg"]], [pstimdict["neg01.jpg"], pstimdict["neg11.jpg"], pstimdict["neg21.jpg"], pstimdict["neg31.jpg"]]),
+    AudioStimulus("Cym02.wav", "Welsh Audio 02", "Cym", [pstimdict["pos02.jpg"], pstimdict["pos12.jpg"], pstimdict["pos22.jpg"], pstimdict["pos32.jpg"]], [pstimdict["neg02.jpg"], pstimdict["neg12.jpg"], pstimdict["neg22.jpg"], pstimdict["neg32.jpg"]]),
+    AudioStimulus("Cym03.wav", "Welsh Audio 03", "Cym", [pstimdict["pos03.jpg"], pstimdict["pos13.jpg"], pstimdict["pos23.jpg"], pstimdict["pos33.jpg"]], [pstimdict["neg03.jpg"], pstimdict["neg13.jpg"], pstimdict["neg23.jpg"], pstimdict["neg33.jpg"]]),
+    AudioStimulus("Cym04.wav", "Welsh Audio 04", "Cym", [pstimdict["pos04.jpg"], pstimdict["pos14.jpg"], pstimdict["pos24.jpg"], pstimdict["pos34.jpg"]], [pstimdict["neg04.jpg"], pstimdict["neg14.jpg"], pstimdict["neg24.jpg"], pstimdict["neg34.jpg"]]),
+    AudioStimulus("Cym05.wav", "Welsh Audio 05", "Cym", [pstimdict["pos05.jpg"], pstimdict["pos15.jpg"], pstimdict["pos25.jpg"], pstimdict["pos35.jpg"]], [pstimdict["neg05.jpg"], pstimdict["neg15.jpg"], pstimdict["neg25.jpg"], pstimdict["neg35.jpg"]]),
+    AudioStimulus("Cym06.wav", "Welsh Audio 06", "Cym", [pstimdict["pos06.jpg"], pstimdict["pos16.jpg"], pstimdict["pos26.jpg"], pstimdict["pos36.jpg"]], [pstimdict["neg06.jpg"], pstimdict["neg16.jpg"], pstimdict["neg26.jpg"], pstimdict["neg36.jpg"]]),
+    AudioStimulus("Cym07.wav", "Welsh Audio 07", "Cym", [pstimdict["pos07.jpg"], pstimdict["pos17.jpg"], pstimdict["pos27.jpg"], pstimdict["pos37.jpg"]], [pstimdict["neg07.jpg"], pstimdict["neg17.jpg"], pstimdict["neg27.jpg"], pstimdict["neg37.jpg"]]),
+    AudioStimulus("Cym08.wav", "Welsh Audio 08", "Cym", [pstimdict["pos08.jpg"], pstimdict["pos18.jpg"], pstimdict["pos28.jpg"], pstimdict["pos38.jpg"]], [pstimdict["neg08.jpg"], pstimdict["neg18.jpg"], pstimdict["neg28.jpg"], pstimdict["neg38.jpg"]]),
+    AudioStimulus("Cym09.wav", "Welsh Audio 09", "Cym", [pstimdict["pos09.jpg"], pstimdict["pos19.jpg"], pstimdict["pos29.jpg"], pstimdict["pos39.jpg"]], [pstimdict["neg09.jpg"], pstimdict["neg19.jpg"], pstimdict["neg29.jpg"], pstimdict["neg39.jpg"]]),
+    AudioStimulus("Cym10.wav", "Welsh Audio 10", "Cym", [pstimdict["pos10.jpg"], pstimdict["pos20.jpg"], pstimdict["pos30.jpg"], pstimdict["pos40.jpg"]], [pstimdict["neg10.jpg"], pstimdict["neg20.jpg"], pstimdict["neg30.jpg"], pstimdict["neg40.jpg"]]),
+    #             Filename,    Description,      Lang,  Compatible positive picture stimuli,                                                              Compatible negative picture stimuli
+    AudioStimulus("Cym11.wav", "Welsh Audio 11", "Cym", [pstimdict["pos01.jpg"], pstimdict["pos11.jpg"], pstimdict["pos21.jpg"], pstimdict["pos31.jpg"]], [pstimdict["neg01.jpg"], pstimdict["neg11.jpg"], pstimdict["neg21.jpg"], pstimdict["neg31.jpg"]]),
+    AudioStimulus("Cym12.wav", "Welsh Audio 12", "Cym", [pstimdict["pos02.jpg"], pstimdict["pos12.jpg"], pstimdict["pos22.jpg"], pstimdict["pos32.jpg"]], [pstimdict["neg02.jpg"], pstimdict["neg12.jpg"], pstimdict["neg22.jpg"], pstimdict["neg32.jpg"]]),
+    AudioStimulus("Cym13.wav", "Welsh Audio 13", "Cym", [pstimdict["pos03.jpg"], pstimdict["pos13.jpg"], pstimdict["pos23.jpg"], pstimdict["pos33.jpg"]], [pstimdict["neg03.jpg"], pstimdict["neg13.jpg"], pstimdict["neg23.jpg"], pstimdict["neg33.jpg"]]),
+    AudioStimulus("Cym14.wav", "Welsh Audio 14", "Cym", [pstimdict["pos04.jpg"], pstimdict["pos14.jpg"], pstimdict["pos24.jpg"], pstimdict["pos34.jpg"]], [pstimdict["neg04.jpg"], pstimdict["neg14.jpg"], pstimdict["neg24.jpg"], pstimdict["neg34.jpg"]]),
+    AudioStimulus("Cym15.wav", "Welsh Audio 15", "Cym", [pstimdict["pos05.jpg"], pstimdict["pos15.jpg"], pstimdict["pos25.jpg"], pstimdict["pos35.jpg"]], [pstimdict["neg05.jpg"], pstimdict["neg15.jpg"], pstimdict["neg25.jpg"], pstimdict["neg35.jpg"]]),
+    AudioStimulus("Cym16.wav", "Welsh Audio 16", "Cym", [pstimdict["pos06.jpg"], pstimdict["pos16.jpg"], pstimdict["pos26.jpg"], pstimdict["pos36.jpg"]], [pstimdict["neg06.jpg"], pstimdict["neg16.jpg"], pstimdict["neg26.jpg"], pstimdict["neg36.jpg"]]),
+    AudioStimulus("Cym17.wav", "Welsh Audio 17", "Cym", [pstimdict["pos07.jpg"], pstimdict["pos17.jpg"], pstimdict["pos27.jpg"], pstimdict["pos37.jpg"]], [pstimdict["neg07.jpg"], pstimdict["neg17.jpg"], pstimdict["neg27.jpg"], pstimdict["neg37.jpg"]]),
+    AudioStimulus("Cym18.wav", "Welsh Audio 18", "Cym", [pstimdict["pos08.jpg"], pstimdict["pos18.jpg"], pstimdict["pos28.jpg"], pstimdict["pos38.jpg"]], [pstimdict["neg08.jpg"], pstimdict["neg18.jpg"], pstimdict["neg28.jpg"], pstimdict["neg38.jpg"]]),
+    AudioStimulus("Cym19.wav", "Welsh Audio 19", "Cym", [pstimdict["pos09.jpg"], pstimdict["pos19.jpg"], pstimdict["pos29.jpg"], pstimdict["pos39.jpg"]], [pstimdict["neg09.jpg"], pstimdict["neg19.jpg"], pstimdict["neg29.jpg"], pstimdict["neg39.jpg"]]),
+    AudioStimulus("Cym20.wav", "Welsh Audio 20", "Cym", [pstimdict["pos10.jpg"], pstimdict["pos20.jpg"], pstimdict["pos30.jpg"], pstimdict["pos40.jpg"]], [pstimdict["neg10.jpg"], pstimdict["neg20.jpg"], pstimdict["neg30.jpg"], pstimdict["neg40.jpg"]]),
+    #             Filename,    Description,      Lang,  Compatible positive picture stimuli,                                                              Compatible negative picture stimuli
+    AudioStimulus("Cym21.wav", "Welsh Audio 21", "Cym", [pstimdict["pos01.jpg"], pstimdict["pos11.jpg"], pstimdict["pos21.jpg"], pstimdict["pos31.jpg"]], [pstimdict["neg01.jpg"], pstimdict["neg11.jpg"], pstimdict["neg21.jpg"], pstimdict["neg31.jpg"]]),
+    AudioStimulus("Cym22.wav", "Welsh Audio 22", "Cym", [pstimdict["pos02.jpg"], pstimdict["pos12.jpg"], pstimdict["pos22.jpg"], pstimdict["pos32.jpg"]], [pstimdict["neg02.jpg"], pstimdict["neg12.jpg"], pstimdict["neg22.jpg"], pstimdict["neg32.jpg"]]),
+    AudioStimulus("Cym23.wav", "Welsh Audio 23", "Cym", [pstimdict["pos03.jpg"], pstimdict["pos13.jpg"], pstimdict["pos23.jpg"], pstimdict["pos33.jpg"]], [pstimdict["neg03.jpg"], pstimdict["neg13.jpg"], pstimdict["neg23.jpg"], pstimdict["neg33.jpg"]]),
+    AudioStimulus("Cym24.wav", "Welsh Audio 24", "Cym", [pstimdict["pos04.jpg"], pstimdict["pos14.jpg"], pstimdict["pos24.jpg"], pstimdict["pos34.jpg"]], [pstimdict["neg04.jpg"], pstimdict["neg14.jpg"], pstimdict["neg24.jpg"], pstimdict["neg34.jpg"]]),
+    AudioStimulus("Cym25.wav", "Welsh Audio 25", "Cym", [pstimdict["pos05.jpg"], pstimdict["pos15.jpg"], pstimdict["pos25.jpg"], pstimdict["pos35.jpg"]], [pstimdict["neg05.jpg"], pstimdict["neg15.jpg"], pstimdict["neg25.jpg"], pstimdict["neg35.jpg"]]),
+    AudioStimulus("Cym26.wav", "Welsh Audio 26", "Cym", [pstimdict["pos06.jpg"], pstimdict["pos16.jpg"], pstimdict["pos26.jpg"], pstimdict["pos36.jpg"]], [pstimdict["neg06.jpg"], pstimdict["neg16.jpg"], pstimdict["neg26.jpg"], pstimdict["neg36.jpg"]]),
+    AudioStimulus("Cym27.wav", "Welsh Audio 27", "Cym", [pstimdict["pos07.jpg"], pstimdict["pos17.jpg"], pstimdict["pos27.jpg"], pstimdict["pos37.jpg"]], [pstimdict["neg07.jpg"], pstimdict["neg17.jpg"], pstimdict["neg27.jpg"], pstimdict["neg37.jpg"]]),
+    AudioStimulus("Cym28.wav", "Welsh Audio 28", "Cym", [pstimdict["pos08.jpg"], pstimdict["pos18.jpg"], pstimdict["pos28.jpg"], pstimdict["pos38.jpg"]], [pstimdict["neg08.jpg"], pstimdict["neg18.jpg"], pstimdict["neg28.jpg"], pstimdict["neg38.jpg"]]),
+    AudioStimulus("Cym29.wav", "Welsh Audio 29", "Cym", [pstimdict["pos09.jpg"], pstimdict["pos19.jpg"], pstimdict["pos29.jpg"], pstimdict["pos39.jpg"]], [pstimdict["neg09.jpg"], pstimdict["neg19.jpg"], pstimdict["neg29.jpg"], pstimdict["neg39.jpg"]]),
+    AudioStimulus("Cym30.wav", "Welsh Audio 30", "Cym", [pstimdict["pos10.jpg"], pstimdict["pos20.jpg"], pstimdict["pos30.jpg"], pstimdict["pos40.jpg"]], [pstimdict["neg10.jpg"], pstimdict["neg20.jpg"], pstimdict["neg30.jpg"], pstimdict["neg40.jpg"]]),
+    #             Filename,    Description,      Lang,  Compatible positive picture stimuli,                                                              Compatible negative picture stimuli
+    AudioStimulus("Cym31.wav", "Welsh Audio 31", "Cym", [pstimdict["pos01.jpg"], pstimdict["pos11.jpg"], pstimdict["pos21.jpg"], pstimdict["pos31.jpg"]], [pstimdict["neg01.jpg"], pstimdict["neg11.jpg"], pstimdict["neg21.jpg"], pstimdict["neg31.jpg"]]),
+    AudioStimulus("Cym32.wav", "Welsh Audio 32", "Cym", [pstimdict["pos02.jpg"], pstimdict["pos12.jpg"], pstimdict["pos22.jpg"], pstimdict["pos32.jpg"]], [pstimdict["neg02.jpg"], pstimdict["neg12.jpg"], pstimdict["neg22.jpg"], pstimdict["neg32.jpg"]]),
+    AudioStimulus("Cym33.wav", "Welsh Audio 33", "Cym", [pstimdict["pos03.jpg"], pstimdict["pos13.jpg"], pstimdict["pos23.jpg"], pstimdict["pos33.jpg"]], [pstimdict["neg03.jpg"], pstimdict["neg13.jpg"], pstimdict["neg23.jpg"], pstimdict["neg33.jpg"]]),
+    AudioStimulus("Cym34.wav", "Welsh Audio 34", "Cym", [pstimdict["pos04.jpg"], pstimdict["pos14.jpg"], pstimdict["pos24.jpg"], pstimdict["pos34.jpg"]], [pstimdict["neg04.jpg"], pstimdict["neg14.jpg"], pstimdict["neg24.jpg"], pstimdict["neg34.jpg"]]),
+    AudioStimulus("Cym35.wav", "Welsh Audio 35", "Cym", [pstimdict["pos05.jpg"], pstimdict["pos15.jpg"], pstimdict["pos25.jpg"], pstimdict["pos35.jpg"]], [pstimdict["neg05.jpg"], pstimdict["neg15.jpg"], pstimdict["neg25.jpg"], pstimdict["neg35.jpg"]]),
+    AudioStimulus("Cym36.wav", "Welsh Audio 36", "Cym", [pstimdict["pos06.jpg"], pstimdict["pos16.jpg"], pstimdict["pos26.jpg"], pstimdict["pos36.jpg"]], [pstimdict["neg06.jpg"], pstimdict["neg16.jpg"], pstimdict["neg26.jpg"], pstimdict["neg36.jpg"]]),
+    AudioStimulus("Cym37.wav", "Welsh Audio 37", "Cym", [pstimdict["pos07.jpg"], pstimdict["pos17.jpg"], pstimdict["pos27.jpg"], pstimdict["pos37.jpg"]], [pstimdict["neg07.jpg"], pstimdict["neg17.jpg"], pstimdict["neg27.jpg"], pstimdict["neg37.jpg"]]),
+    AudioStimulus("Cym38.wav", "Welsh Audio 38", "Cym", [pstimdict["pos08.jpg"], pstimdict["pos18.jpg"], pstimdict["pos28.jpg"], pstimdict["pos38.jpg"]], [pstimdict["neg08.jpg"], pstimdict["neg18.jpg"], pstimdict["neg28.jpg"], pstimdict["neg38.jpg"]]),
+    AudioStimulus("Cym39.wav", "Welsh Audio 39", "Cym", [pstimdict["pos09.jpg"], pstimdict["pos19.jpg"], pstimdict["pos29.jpg"], pstimdict["pos39.jpg"]], [pstimdict["neg09.jpg"], pstimdict["neg19.jpg"], pstimdict["neg29.jpg"], pstimdict["neg39.jpg"]]),
+    AudioStimulus("Cym40.wav", "Welsh Audio 40", "Cym", [pstimdict["pos10.jpg"], pstimdict["pos20.jpg"], pstimdict["pos30.jpg"], pstimdict["pos40.jpg"]], [pstimdict["neg10.jpg"], pstimdict["neg20.jpg"], pstimdict["neg30.jpg"], pstimdict["neg40.jpg"]]),
 ]
 
 astimdict: dict[str, AudioStimulus] = {
