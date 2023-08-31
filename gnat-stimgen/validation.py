@@ -115,10 +115,72 @@ def validate_astimlist(astimlist: list[AudioStimulus]) -> tuple[list[str], list[
         )
 
     # E Check balance of languages coded
-    ...
+    if len(languages_coded) >= 2:
+        l1, l2 = list(languages_coded)[:2]
+        count_l1: int = len([x for x in astimlist if x.language == l1])
+        count_l2: int = len([x for x in astimlist if x.language == l1])
+        if count_l1 != count_l2:
+            errors.append(
+                "Unbalanced language distribution of audio stimulus items: "
+                f"expected 40*{l1}:40*{l2}, {count_l1}*{l1}:{count_l2}*{l2} given."
+            )
 
     # E Check for number of compatible positive and negative pictures
-    ...
+    COMPATIBLE_ITEMS_REQUIRED: int = 4
+    compatible_item_counts: dict[str, tuple[int, int]] = {
+        x.filename: (len(x.compatible_pos), len(x.compatible_neg)) for x in astimlist
+    }
+    too_few_positive: set[str] = {
+        k for k, v in compatible_item_counts.items() if v[0] < COMPATIBLE_ITEMS_REQUIRED
+    }
+    too_few_negative: set[str] = {
+        k for k, v in compatible_item_counts.items() if v[1] < COMPATIBLE_ITEMS_REQUIRED
+    }
+    too_many_positive: set[str] = {
+        k for k, v in compatible_item_counts.items() if v[0] > COMPATIBLE_ITEMS_REQUIRED
+    }
+    too_many_negative: set[str] = {
+        k for k, v in compatible_item_counts.items() if v[1] > COMPATIBLE_ITEMS_REQUIRED
+    }
+    if too_few_positive:
+        errors.append(
+            "One or more audio stimulus items have too few compatible positive "
+            f"picture stimuli: check items {too_few_positive!r}."
+        )
+    if too_few_negative:
+        errors.append(
+            "One or more audio stimulus items have too few compatible negative "
+            f"picture stimuli: check items {too_few_negative!r}."
+        )
+    if too_many_positive:
+        errors.append(
+            "One or more audio stimulus items have too many compatible positive "
+            f"picture stimuli: check items {too_many_positive!r}."
+        )
+    if too_many_negative:
+        errors.append(
+            "One or more audio stimulus items have too many compatible negative "
+            f"picture stimuli: check items {too_many_negative!r}."
+        )
+
+    # E Check for distinctness of compatible positive and negative pictures
+    overlapping_positives: set[AudioStimulus] = set()
+    overlapping_negatives: set[AudioStimulus] = set()
+    for stim in astimlist:
+        if len(set(stim.compatible_pos)) != len(stim.compatible_pos):
+            overlapping_positives.add(stim.filename)
+        if len(set(stim.compatible_neg)) != len(stim.compatible_neg):
+            overlapping_negatives.add(stim.filename)
+    if overlapping_positives:
+        errors.append(
+            "One or more audio stimulus items have repeated compatible positive "
+            f"picture stimuli: check items {overlapping_positives!r}."
+        )
+    if overlapping_negatives:
+        errors.append(
+            "One or more audio stimulus items have repeated compatible negative "
+            f"picture stimuli: check items {overlapping_negatives!r}."
+        )
 
     # E Check for distribution of compatible positive and negative pictures
     ...
