@@ -1,7 +1,19 @@
+"""Validation methods for picture and audio stimulus lists.
+
+Validate a list of PictureStimulus or AudioStimulus items to check that they
+conform to the assumptions of distribution in the GNAT experiment. The main
+point of these functions is to catch errors that are easily introduced as the
+lists of stimuli and compatible/incompatible items are designed, updated, or
+adapted to new language pairs.
+"""
+from .datasets import KNOWN_LANGUAGES
 from .types import PictureStimulus, AudioStimulus
 
 
-def validate_pstimlist(pstimlist: list[PictureStimulus]) -> tuple[list[str], list[str]]:
+def validate_pstimlist(
+        pstimlist: list[PictureStimulus]
+        ) -> tuple[list[str], list[str]]:
+    """Validate a list of PictureStimulus items."""
     errors: list[str] = []
     warnings: list[str] = []
 
@@ -18,7 +30,9 @@ def validate_pstimlist(pstimlist: list[PictureStimulus]) -> tuple[list[str], lis
         )
 
     # E Check for invalid valence fields
-    invalid_valences = {x.valence for x in pstimlist if x.valence not in ("pos", "neg")}
+    invalid_valences = {
+        x.valence for x in pstimlist if x.valence not in ("pos", "neg")
+    }
     count_invalid = len(invalid_valences)
     if count_invalid > 0:
         errors.append(
@@ -66,8 +80,14 @@ def validate_pstimlist(pstimlist: list[PictureStimulus]) -> tuple[list[str], lis
         )
 
     # W Check for filenames indicative of opposing valence
-    pos_neg: set[str] = {x.filename for x in pstimlist if "pos" in x.filename.lower() and x.valence == "neg"}
-    neg_pos: set[str] = {x.filename for x in pstimlist if "neg" in x.filename.lower() and x.valence == "pos"}
+    pos_neg: set[str] = {
+        x.filename for x in pstimlist
+        if "pos" in x.filename.lower() and x.valence == "neg"
+    }
+    neg_pos: set[str] = {
+        x.filename for x in pstimlist
+        if "neg" in x.filename.lower() and x.valence == "pos"
+    }
     if pos_neg:
         warnings.append(
             "One or more picture stimulus filenames hint at positive valence "
@@ -85,7 +105,10 @@ def validate_pstimlist(pstimlist: list[PictureStimulus]) -> tuple[list[str], lis
     return (errors, warnings)
 
 
-def validate_astimlist(astimlist: list[AudioStimulus]) -> tuple[list[str], list[str]]:
+def validate_astimlist(
+        astimlist: list[AudioStimulus]
+        ) -> tuple[list[str], list[str]]:
+    """Validate a list of AudioStimulus items."""
     errors: list[str] = []
     warnings: list[str] = []
 
@@ -122,45 +145,51 @@ def validate_astimlist(astimlist: list[AudioStimulus]) -> tuple[list[str], list[
         if count_l1 != count_l2:
             errors.append(
                 "Unbalanced language distribution of audio stimulus items: "
-                f"expected 40*{l1}:40*{l2}, {count_l1}*{l1}:{count_l2}*{l2} given."
+                f"expected 40*{l1}:40*{l2}, {count_l1}*{l1}:{count_l2}*{l2} "
+                "given."
             )
 
     # E Check for number of compatible positive and negative pictures
     COMPATIBLE_ITEMS_REQUIRED: int = 4
     compatible_item_counts: dict[str, tuple[int, int]] = {
-        x.filename: (len(x.compatible_pos), len(x.compatible_neg)) for x in astimlist
+        x.filename: (len(x.compatible_pos), len(x.compatible_neg))
+        for x in astimlist
     }
     too_few_positive: set[str] = {
-        k for k, v in compatible_item_counts.items() if v[0] < COMPATIBLE_ITEMS_REQUIRED
+        k for k, v in compatible_item_counts.items()
+        if v[0] < COMPATIBLE_ITEMS_REQUIRED
     }
     too_few_negative: set[str] = {
-        k for k, v in compatible_item_counts.items() if v[1] < COMPATIBLE_ITEMS_REQUIRED
+        k for k, v in compatible_item_counts.items()
+        if v[1] < COMPATIBLE_ITEMS_REQUIRED
     }
     too_many_positive: set[str] = {
-        k for k, v in compatible_item_counts.items() if v[0] > COMPATIBLE_ITEMS_REQUIRED
+        k for k, v in compatible_item_counts.items()
+        if v[0] > COMPATIBLE_ITEMS_REQUIRED
     }
     too_many_negative: set[str] = {
-        k for k, v in compatible_item_counts.items() if v[1] > COMPATIBLE_ITEMS_REQUIRED
+        k for k, v in compatible_item_counts.items()
+        if v[1] > COMPATIBLE_ITEMS_REQUIRED
     }
     if too_few_positive:
         errors.append(
-            "One or more audio stimulus items have too few compatible positive "
-            f"picture stimuli: check items {too_few_positive!r}."
+            "One or more audio stimulus items have too few compatible positive"
+            f" picture stimuli: check items {too_few_positive!r}."
         )
     if too_few_negative:
         errors.append(
-            "One or more audio stimulus items have too few compatible negative "
-            f"picture stimuli: check items {too_few_negative!r}."
+            "One or more audio stimulus items have too few compatible negative"
+            f" picture stimuli: check items {too_few_negative!r}."
         )
     if too_many_positive:
         errors.append(
-            "One or more audio stimulus items have too many compatible positive "
-            f"picture stimuli: check items {too_many_positive!r}."
+            "One or more audio stimulus items have too many compatible "
+            f"positive picture stimuli: check items {too_many_positive!r}."
         )
     if too_many_negative:
         errors.append(
-            "One or more audio stimulus items have too many compatible negative "
-            f"picture stimuli: check items {too_many_negative!r}."
+            "One or more audio stimulus items have too many compatible "
+            f"negative picture stimuli: check items {too_many_negative!r}."
         )
 
     # E Check for distinctness of compatible positive and negative pictures
@@ -173,34 +202,34 @@ def validate_astimlist(astimlist: list[AudioStimulus]) -> tuple[list[str], list[
             overlapping_negatives.add(stim.filename)
     if overlapping_positives:
         errors.append(
-            "One or more audio stimulus items have repeated compatible positive "
-            f"picture stimuli: check items {overlapping_positives!r}."
+            "One or more audio stimulus items have repeated compatible "
+            f"positive picture stimuli: check items {overlapping_positives!r}."
         )
     if overlapping_negatives:
         errors.append(
-            "One or more audio stimulus items have repeated compatible negative "
-            f"picture stimuli: check items {overlapping_negatives!r}."
+            "One or more audio stimulus items have repeated compatible "
+            f"negative picture stimuli: check items {overlapping_negatives!r}."
         )
 
     # E Check for distribution of compatible positive and negative pictures
-    positive_picture_associations: dict[str, set[AudioStimulus]] = {}
-    negative_picture_associations: dict[str, set[AudioStimulus]] = {}
+    pos_picture_associations: dict[str, set[AudioStimulus]] = {}
+    neg_picture_associations: dict[str, set[AudioStimulus]] = {}
     for stim in astimlist:
         for pstim in stim.compatible_pos:
-            if pstim.filename not in positive_picture_associations:
-                positive_picture_associations[pstim.filename] = {stim.filename}
+            if pstim.filename not in pos_picture_associations:
+                pos_picture_associations[pstim.filename] = {stim.filename}
             else:
-                positive_picture_associations[pstim.filename].add(stim.filename)
+                pos_picture_associations[pstim.filename].add(stim.filename)
         for pstim in stim.compatible_neg:
-            if pstim.filename not in negative_picture_associations:
-                negative_picture_associations[pstim.filename] = {stim.filename}
+            if pstim.filename not in neg_picture_associations:
+                neg_picture_associations[pstim.filename] = {stim.filename}
             else:
-                negative_picture_associations[pstim.filename].add(stim.filename)
+                neg_picture_associations[pstim.filename].add(stim.filename)
     uneven_positive_pictures: dict[str, set[AudioStimulus]] = {
-        k: v for k, v in positive_picture_associations.items() if len(v) != 8
+        k: v for k, v in pos_picture_associations.items() if len(v) != 8
     }
     uneven_negative_pictures: dict[str, set[AudioStimulus]] = {
-        k: v for k, v in negative_picture_associations.items() if len(v) != 8
+        k: v for k, v in neg_picture_associations.items() if len(v) != 8
     }
     if uneven_positive_pictures:
         e_list: list[str] = [
@@ -244,8 +273,9 @@ def validate_astimlist(astimlist: list[AudioStimulus]) -> tuple[list[str], list[
         )
 
     # W Check for invalid language fields
-    known_languages = ("Eng", "Cym", "Ger", "Ltz", "Lmo", "Ita")
-    invalid_languages = {x.language for x in astimlist if x.language not in known_languages}
+    invalid_languages = {
+        x.language for x in astimlist if x.language not in KNOWN_LANGUAGES
+    }
     if len(invalid_languages) > 0:
         warnings.append(
             "Possibly invalid values for audio stimulus languages found: "
@@ -271,8 +301,16 @@ def validate_astimlist(astimlist: list[AudioStimulus]) -> tuple[list[str], list[
     # W Check for filenames indicative of different language
     if len(languages_coded) >= 2:
         l1, l2 = list(languages_coded)[:2]
-        l1_l2: set[str] = {x.filename for x in astimlist if l1.lower() in x.filename.lower() and x.language.lower() == l2.lower()}
-        l2_l1: set[str] = {x.filename for x in astimlist if l2.lower() in x.filename.lower() and x.language.lower() == l1.lower()}
+        l1_l2: set[str] = {
+            x.filename for x in astimlist
+            if l1.lower() in x.filename.lower()
+            and x.language.lower() == l2.lower()
+        }
+        l2_l1: set[str] = {
+            x.filename for x in astimlist
+            if l2.lower() in x.filename.lower()
+            and x.language.lower() == l1.lower()
+        }
         if l1_l2:
             warnings.append(
                 f"One or more audio stimulus filenames hint at language {l1} "

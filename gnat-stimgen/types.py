@@ -1,18 +1,26 @@
+"""Types for experimental items for the GNAT."""
 from typing import Literal, NamedTuple
 
+# Literal string alias for picture valence
 Valence = Literal["pos", "neg"]
 
 
 class PictureStimulus(NamedTuple):
+    """Represents a picture/image stimulus."""
     filename: str
     description: str
     valence: Valence
 
     def __str__(self) -> str:
-        return f"PictureStim({self.filename}, {self.valence}, {self.description})"
+        return (
+            f"PictureStim({self.filename}, "
+            f"{self.valence}, "
+            f"{self.description})"
+        )
 
 
 class AudioStimulus(NamedTuple):
+    """Represents an audio stimulus."""
     filename: str
     description: str
     language: str
@@ -24,10 +32,15 @@ class AudioStimulus(NamedTuple):
         return self.compatible_pos + self.compatible_neg
 
     def __str__(self) -> str:
-        return f"AudioStim({self.filename}, {self.language}, {self.description})"
+        return (
+            f"AudioStim({self.filename}, "
+            f"{self.language}, "
+            f"{self.description})"
+        )
 
 
 class StimulusSequence(NamedTuple):
+    """Represents a sequence of an audio stimulus and a picture stimulus."""
     first: AudioStimulus
     second: PictureStimulus
 
@@ -44,6 +57,7 @@ class StimulusSequence(NamedTuple):
 
 
 class BlockRow(NamedTuple):
+    """Represents a row of a trial for an experimental block."""
     stimseq: StimulusSequence
     condition: tuple[str, str]
     languages: tuple[str, str]

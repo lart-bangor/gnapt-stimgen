@@ -83,15 +83,15 @@ def load_stimuli_lists(
         f"Loading stimulus lists for language pair {language_pair}..", nl=False
     )
     try:
-        pstimlist, pstimdict = get_picture_stimuli(language_pair)
-        astimlist, astimdict = get_audio_stimuli(language_pair)
+        pstimlist, _ = get_picture_stimuli(language_pair)
+        astimlist, _ = get_audio_stimuli(language_pair)
         cli.secho(" OK.", fg="green")
     except RuntimeError as e:
         cli.secho(" XX.", fg="red")
         cli.secho("XX ", nl=False, err=True, fg="red")
         cli.secho(str(e), err=True, fg="black", bg="white")
         return ([], [], [], [])
-    return (pstimlist, pstimdict, astimlist, astimdict)
+    return (pstimlist, astimlist)
 
 
 def build_stimulus_sequences(
@@ -108,24 +108,7 @@ def build_stimulus_sequences(
     return sequences
 
 
-# def split_stimulus_sequences(
-#         stimseqs: list[StimulusSequence]) -> dict[str, list[StimulusSequence]]:
-#     splitseqs: dict[str, dict[str, list[StimulusSequence]]] = {}
-#     cli.echo("Splitting stimulus sequences by pattern and audio stimulus...", nl=False)
-#     for stimseq in stimseqs:
-#         pattern = stimseq.pattern
-#         afname = stimseq.first.filename
-#         if pattern not in splitseqs:
-#             splitseqs[pattern] = {}
-#         if afname in splitseqs[pattern]:
-#             splitseqs[pattern][afname].append(stimseq)
-#         else:
-#             splitseqs[pattern][afname] = [stimseq]
-#     cli.secho(" OK.", fg="green")
-#     return splitseqs
-
-
-def make_block2(
+def make_block(
         condition: tuple[str, str],
         languages: tuple[str, str],
         stimseqs: list[StimulusSequence],
@@ -155,12 +138,12 @@ def make_block2(
     return (rows, stimseqs)
 
 
-def randomize_stimseqs(stimseqs: list[StimulusSequence]) -> list[StimulusSequence]:
-    if len(stimseqs) > 2080:
-        print("  W not all possible randomizations of the stimulus sequences can be generated.")
-    stimseqs_cp = stimseqs.copy()
-    random.shuffle(stimseqs_cp)
-    return stimseqs_cp
+# def randomize_stimseqs(stimseqs: list[StimulusSequence]) -> list[StimulusSequence]:
+#     if len(stimseqs) > 2080:
+#         print("  W not all possible randomizations of the stimulus sequences can be generated.")
+#     stimseqs_cp = stimseqs.copy()
+#     random.shuffle(stimseqs_cp)
+#     return stimseqs_cp
 
 
 def write_block(name: str, rows: list[BlockRow]):
@@ -184,14 +167,18 @@ def write_block(name: str, rows: list[BlockRow]):
 @cli.command()
 @cli.argument("language_pair", required=False)
 def main(language_pair: str | None = None):
-    """Stimulus generator for the Go-No Go Association Task ('23/24)"""
+    """Stimulus generator for the Go-No Go Association Task ('23/24).
+
+    The optional argument LANGUAGE_PAIR can be one of EngCym, GerLtz, or
+    ItaLmo (default: EngCym).
+    """
 
     if not language_pair:
         language_pair = "EngCym"
         cli.secho("!! ", nl=False, fg="yellow")
         cli.echo("No language pair specified, assuming EngCym.")
 
-    pstimlist, pstimdict, astimlist, astimdict = load_stimuli_lists(
+    pstimlist, astimlist = load_stimuli_lists(
         language_pair
     )
     if not pstimlist:
@@ -204,36 +191,59 @@ def main(language_pair: str | None = None):
 
     stimseqs = build_stimulus_sequences(astimlist)
     print("Stimseqs original length:", len(stimseqs))
-    # stimseqs = randomize_stimseqs(stimseqs)
-    # print("Stimseqs randomized length:", len(stimseqs))
 
-    block1, nstimseqs = make_block2(("Eng", "neg"), ("Eng", "Cym"), stimseqs)
-    print("Stimseqs after block1:", len(nstimseqs))
-    block2, nstimseqs = make_block2(("Eng", "neg"), ("Eng", "Cym"), nstimseqs)
-    print("Stimseqs after block2:", len(nstimseqs))
-    block3, nstimseqs = make_block2(("Cym", "pos"), ("Eng", "Cym"), nstimseqs)
-    print("Stimseqs after block3:", len(nstimseqs))
-    block4, nstimseqs = make_block2(("Cym", "pos"), ("Eng", "Cym"), nstimseqs)
-    print("Stimseqs after block4:", len(nstimseqs))
-    block5, nstimseqs = make_block2(("Cym", "neg"), ("Eng", "Cym"), nstimseqs)
-    print("Stimseqs after block5:", len(nstimseqs))
-    block6, nstimseqs = make_block2(("Cym", "neg"), ("Eng", "Cym"), nstimseqs)
-    print("Stimseqs after block6:", len(nstimseqs))
-    block7, nstimseqs = make_block2(("Eng", "pos"), ("Eng", "Cym"), nstimseqs)
-    print("Stimseqs after block7:", len(nstimseqs))
-    block8, nstimseqs = make_block2(("Eng", "pos"), ("Eng", "Cym"), nstimseqs)
-    print("Stimseqs after block8:", len(nstimseqs))
-    write_block("block1", block1)
-    write_block("block2", block2)
-    write_block("block3", block3)
-    write_block("block4", block4)
-    write_block("block5", block5)
-    write_block("block6", block6)
-    write_block("block7", block7)
-    write_block("block8", block8)
+    # @TODO - This code needs to be independent of hardcoded Eng/Cym and use
+    #         variable l1/l2 instead.
+    target_languages = ("Eng", "Cym")
+    blocks_to_generate = {
+        "block1": (("Eng", "neg"), target_languages),
+        "block2": (("Eng", "neg"), target_languages),
+        "block3": (("Cym", "pos"), target_languages),
+        "block4": (("Cym", "pos"), target_languages),
+        "block5": (("Cym", "neg"), target_languages),
+        "block6": (("Cym", "neg"), target_languages),
+        "block7": (("Eng", "pos"), target_languages),
+        "block8": (("Eng", "pos"), target_languages),
+    }
+    for block_name, block_spec in blocks_to_generate.items():
+        cli.echo(f"Generating block '{block_name}'... ", nl=False)
+        block, stimseqs = make_block(*block_spec, stimseqs)
+        cli.secho("OK.", fg="green")
+        cli.echo(f"Writing block '{block_name}' to file...")
+        cli.secho("  i ", fg="blue", nl=False)
+        cli.echo(f"Path of file: ./{block_name}.tsv")
+        write_block(block_name, block)
+        cli.secho("  OK ", fg="green", nl=False)
+        cli.echo("File written successfully.")
 
-    print("Stimseqs left over:", len(nstimseqs))
-    #print(nstimseqs)
+    # block1, nstimseqs = make_block(("Eng", "neg"), ("Eng", "Cym"), stimseqs)
+    # print("Stimseqs after block1:", len(nstimseqs))
+    # block2, nstimseqs = make_block(("Eng", "neg"), ("Eng", "Cym"), nstimseqs)
+    # print("Stimseqs after block2:", len(nstimseqs))
+    # block3, nstimseqs = make_block(("Cym", "pos"), ("Eng", "Cym"), nstimseqs)
+    # print("Stimseqs after block3:", len(nstimseqs))
+    # block4, nstimseqs = make_block(("Cym", "pos"), ("Eng", "Cym"), nstimseqs)
+    # print("Stimseqs after block4:", len(nstimseqs))
+    # block5, nstimseqs = make_block(("Cym", "neg"), ("Eng", "Cym"), nstimseqs)
+    # print("Stimseqs after block5:", len(nstimseqs))
+    # block6, nstimseqs = make_block(("Cym", "neg"), ("Eng", "Cym"), nstimseqs)
+    # print("Stimseqs after block6:", len(nstimseqs))
+    # block7, nstimseqs = make_block(("Eng", "pos"), ("Eng", "Cym"), nstimseqs)
+    # print("Stimseqs after block7:", len(nstimseqs))
+    # block8, nstimseqs = make_block(("Eng", "pos"), ("Eng", "Cym"), nstimseqs)
+    # print("Stimseqs after block8:", len(nstimseqs))
+    # write_block("block1", block1)
+    # write_block("block2", block2)
+    # write_block("block3", block3)
+    # write_block("block4", block4)
+    # write_block("block5", block5)
+    # write_block("block6", block6)
+    # write_block("block7", block7)
+    # write_block("block8", block8)
+
+    # print("Stimseqs left over:", len(nstimseqs))
+
+    cli.secho("SUCCESS :)", fg="bright_green", bold=True)
 
     sys.exit(0)
 
