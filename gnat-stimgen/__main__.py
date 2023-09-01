@@ -1,8 +1,9 @@
 import sys
+import random
 import click as cli
 from .datasets import get_audio_stimuli, get_picture_stimuli
 from .validation import validate_pstimlist, validate_astimlist
-from .types import PictureStimulus, AudioStimulus
+from .types import PictureStimulus, AudioStimulus, StimulusSequence, BlockRow
 
 
 def validate_stimuli(
@@ -93,6 +94,93 @@ def load_stimuli_lists(
     return (pstimlist, pstimdict, astimlist, astimdict)
 
 
+def build_stimulus_sequences(
+        astimlist: list[AudioStimulus]
+        ) -> list[StimulusSequence]:
+    sequences: list[StimulusSequence] = []
+
+    cli.echo("Building stimulus sequences...", nl=False)
+    for astim in astimlist:
+        for pstim in astim.compatibles:
+            seq = StimulusSequence(astim, pstim)
+            sequences.append(seq)
+    cli.secho(" OK.", fg="green")
+    return sequences
+
+
+# def split_stimulus_sequences(
+#         stimseqs: list[StimulusSequence]) -> dict[str, list[StimulusSequence]]:
+#     splitseqs: dict[str, dict[str, list[StimulusSequence]]] = {}
+#     cli.echo("Splitting stimulus sequences by pattern and audio stimulus...", nl=False)
+#     for stimseq in stimseqs:
+#         pattern = stimseq.pattern
+#         afname = stimseq.first.filename
+#         if pattern not in splitseqs:
+#             splitseqs[pattern] = {}
+#         if afname in splitseqs[pattern]:
+#             splitseqs[pattern][afname].append(stimseq)
+#         else:
+#             splitseqs[pattern][afname] = [stimseq]
+#     cli.secho(" OK.", fg="green")
+#     return splitseqs
+
+
+def make_block2(
+        condition: tuple[str, str],
+        languages: tuple[str, str],
+        stimseqs: list[StimulusSequence],
+        ) -> tuple[list[BlockRow], list[StimulusSequence]]:
+    rows: list[BlockRow] = []
+    l1, l2 = languages
+    patterns = (
+        f"{l1}>pos",
+        f"{l1}>neg",
+        f"{l2}>pos",
+        f"{l2}>neg"
+    )
+    afnames_drawn: set[str] = set()
+    pfnames_drawn: set[str] = set()
+    for pattern in patterns:
+        # Draw 20 per pattern, don't repeat afnames or pfnames
+        for i in range(0, 20):
+            # Find first item in list that fits conditions
+            for stimseq in stimseqs:
+                if stimseq.pattern == pattern and stimseq.first.filename not in afnames_drawn and stimseq.second.filename not in pfnames_drawn:
+                    afnames_drawn.add(stimseq.first.filename)
+                    pfnames_drawn.add(stimseq.second.filename)
+                    rows.append(BlockRow(stimseq, condition, (l1, l2)))
+                    stimseqs.remove(stimseq)
+                    break
+
+    return (rows, stimseqs)
+
+
+def randomize_stimseqs(stimseqs: list[StimulusSequence]) -> list[StimulusSequence]:
+    if len(stimseqs) > 2080:
+        print("  W not all possible randomizations of the stimulus sequences can be generated.")
+    stimseqs_cp = stimseqs.copy()
+    random.shuffle(stimseqs_cp)
+    return stimseqs_cp
+
+
+def write_block(name: str, rows: list[BlockRow]):
+    with open(f"./{name}.tsv", "w") as fh:
+        fh.write(
+            "goConditions\t"
+            "soundstimuli\t"
+            "sounddescription\t"
+            "soundcorrAns\t"
+            "lang_triggerID\t"
+            "imagestimuli\t"
+            "imagedescription\t"
+            "imagecorrAns\t"
+            "img_triggerId\n"
+        )
+        for row in rows:
+            fh.write(str(row))
+            fh.write("\n")
+
+
 @cli.command()
 @cli.argument("language_pair", required=False)
 def main(language_pair: str | None = None):
@@ -109,8 +197,43 @@ def main(language_pair: str | None = None):
     if not pstimlist:
         sys.exit(1)
 
+    random.shuffle(astimlist)
+
     if not validate_stimuli(pstimlist, astimlist):
         sys.exit(1)
+
+    stimseqs = build_stimulus_sequences(astimlist)
+    print("Stimseqs original length:", len(stimseqs))
+    # stimseqs = randomize_stimseqs(stimseqs)
+    # print("Stimseqs randomized length:", len(stimseqs))
+
+    block1, nstimseqs = make_block2(("Eng", "neg"), ("Eng", "Cym"), stimseqs)
+    print("Stimseqs after block1:", len(nstimseqs))
+    block2, nstimseqs = make_block2(("Eng", "neg"), ("Eng", "Cym"), nstimseqs)
+    print("Stimseqs after block2:", len(nstimseqs))
+    block3, nstimseqs = make_block2(("Cym", "pos"), ("Eng", "Cym"), nstimseqs)
+    print("Stimseqs after block3:", len(nstimseqs))
+    block4, nstimseqs = make_block2(("Cym", "pos"), ("Eng", "Cym"), nstimseqs)
+    print("Stimseqs after block4:", len(nstimseqs))
+    block5, nstimseqs = make_block2(("Cym", "neg"), ("Eng", "Cym"), nstimseqs)
+    print("Stimseqs after block5:", len(nstimseqs))
+    block6, nstimseqs = make_block2(("Cym", "neg"), ("Eng", "Cym"), nstimseqs)
+    print("Stimseqs after block6:", len(nstimseqs))
+    block7, nstimseqs = make_block2(("Eng", "pos"), ("Eng", "Cym"), nstimseqs)
+    print("Stimseqs after block7:", len(nstimseqs))
+    block8, nstimseqs = make_block2(("Eng", "pos"), ("Eng", "Cym"), nstimseqs)
+    print("Stimseqs after block8:", len(nstimseqs))
+    write_block("block1", block1)
+    write_block("block2", block2)
+    write_block("block3", block3)
+    write_block("block4", block4)
+    write_block("block5", block5)
+    write_block("block6", block6)
+    write_block("block7", block7)
+    write_block("block8", block8)
+
+    print("Stimseqs left over:", len(nstimseqs))
+    #print(nstimseqs)
 
     sys.exit(0)
 

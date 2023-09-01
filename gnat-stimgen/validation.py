@@ -183,7 +183,51 @@ def validate_astimlist(astimlist: list[AudioStimulus]) -> tuple[list[str], list[
         )
 
     # E Check for distribution of compatible positive and negative pictures
-    ...
+    positive_picture_associations: dict[str, set[AudioStimulus]] = {}
+    negative_picture_associations: dict[str, set[AudioStimulus]] = {}
+    for stim in astimlist:
+        for pstim in stim.compatible_pos:
+            if pstim.filename not in positive_picture_associations:
+                positive_picture_associations[pstim.filename] = {stim.filename}
+            else:
+                positive_picture_associations[pstim.filename].add(stim.filename)
+        for pstim in stim.compatible_neg:
+            if pstim.filename not in negative_picture_associations:
+                negative_picture_associations[pstim.filename] = {stim.filename}
+            else:
+                negative_picture_associations[pstim.filename].add(stim.filename)
+    uneven_positive_pictures: dict[str, set[AudioStimulus]] = {
+        k: v for k, v in positive_picture_associations.items() if len(v) != 8
+    }
+    uneven_negative_pictures: dict[str, set[AudioStimulus]] = {
+        k: v for k, v in negative_picture_associations.items() if len(v) != 8
+    }
+    if uneven_positive_pictures:
+        e_list: list[str] = [
+            (
+                f"    - {pfname!r} associated to {len(afnames)} audio stimuli "
+                f"(should be 8), check items {afnames!r}."
+            )
+            for pfname, afnames in uneven_positive_pictures.items()
+        ]
+        e_appendix = "\n".join(e_list)
+        errors.append(
+            "One or more positive picture stimuli are marked as compatible "
+            f"with an uneven number of audio stimuli: {e_appendix}"
+        )
+    if uneven_negative_pictures:
+        e_list: list[str] = [
+            (
+                f"    - {pfname!r} associated to {len(afnames)} audio stimuli "
+                f"(should be 8), check items {afnames!r}."
+            )
+            for pfname, afnames in uneven_negative_pictures.items()
+        ]
+        e_appendix = "\n".join(e_list)
+        errors.append(
+            "One or more negative picture stimuli are marked as compatible "
+            f"with an uneven number of audio stimuli: {e_appendix}"
+        )
 
     # E Check for duplicate filenames
     fnames: list[str] = [x.filename for x in astimlist]
