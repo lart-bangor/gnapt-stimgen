@@ -1,5 +1,6 @@
 import sys
 import random
+import re
 import click as cli
 from .datasets import get_audio_stimuli, get_picture_stimuli
 from .validation import validate_pstimlist, validate_astimlist
@@ -8,7 +9,8 @@ from .types import PictureStimulus, AudioStimulus, StimulusSequence, BlockRow
 
 def validate_stimuli(
         pstimlist: list[PictureStimulus],
-        astimlist: list[AudioStimulus]
+        astimlist: list[AudioStimulus],
+        languages: tuple[str, str]
         ) -> bool:
     """Validate the picture and audio stimulus lists."""
     validation_passed = True
@@ -42,7 +44,7 @@ def validate_stimuli(
         )
 
     cli.echo("Validating audio stimulus set...")
-    errors, warnings = validate_astimlist(astimlist)
+    errors, warnings = validate_astimlist(astimlist, languages)
     if errors:
         for error in errors:
             cli.secho("  E ", nl=False, err=True, fg="red")
@@ -86,11 +88,11 @@ def load_stimuli_lists(
         pstimlist, _ = get_picture_stimuli(language_pair)
         astimlist, _ = get_audio_stimuli(language_pair)
         cli.secho(" OK.", fg="green")
-    except RuntimeError as e:
+    except (RuntimeError, ModuleNotFoundError) as e:
         cli.secho(" XX.", fg="red")
         cli.secho("XX ", nl=False, err=True, fg="red")
         cli.secho(str(e), err=True, fg="black", bg="white")
-        return ([], [], [], [])
+        return ([], [])
     return (pstimlist, astimlist)
 
 
@@ -128,7 +130,11 @@ def make_block(
         for i in range(0, 20):
             # Find first item in list that fits conditions
             for stimseq in stimseqs:
-                if stimseq.pattern == pattern and stimseq.first.filename not in afnames_drawn and stimseq.second.filename not in pfnames_drawn:
+                if (
+                    stimseq.pattern == pattern
+                    and stimseq.first.filename not in afnames_drawn
+                    and stimseq.second.filename not in pfnames_drawn
+                   ):
                     afnames_drawn.add(stimseq.first.filename)
                     pfnames_drawn.add(stimseq.second.filename)
                     rows.append(BlockRow(stimseq, condition, (l1, l2)))
@@ -136,14 +142,6 @@ def make_block(
                     break
 
     return (rows, stimseqs)
-
-
-# def randomize_stimseqs(stimseqs: list[StimulusSequence]) -> list[StimulusSequence]:
-#     if len(stimseqs) > 2080:
-#         print("  W not all possible randomizations of the stimulus sequences can be generated.")
-#     stimseqs_cp = stimseqs.copy()
-#     random.shuffle(stimseqs_cp)
-#     return stimseqs_cp
 
 
 def write_block(name: str, rows: list[BlockRow]):
@@ -164,6 +162,16 @@ def write_block(name: str, rows: list[BlockRow]):
             fh.write("\n")
 
 
+def exit_fail():
+    cli.secho("FAILED 😭", fg="bright_red")
+    sys.exit(1)
+
+
+def exit_success():
+    cli.secho("SUCCESS 😄", fg="bright_green", bold=True)
+    sys.exit(0)
+
+
 @cli.command()
 @cli.argument("language_pair", required=False)
 def main(language_pair: str | None = None):
@@ -173,42 +181,61 @@ def main(language_pair: str | None = None):
     ItaLmo (default: EngCym).
     """
 
+    # Determine and load language pair
     if not language_pair:
         language_pair = "EngCym"
         cli.secho("!! ", nl=False, fg="yellow")
         cli.echo("No language pair specified, assuming EngCym.")
 
-    pstimlist, astimlist = load_stimuli_lists(
-        language_pair
-    )
+    m = re.search(r"([A-Z][a-z]{2})([A-Z][a-z]{2})", language_pair)
+    if not m:
+        cli.secho("XX ", err=True, fg="red", nl=False)
+        cli.secho(
+            f"'{language_pair}' is not a valid language pair code "
+            f"(must match XxxYyy).",
+            bg="white", err=True
+        )
+        exit_fail()
+    languages: tuple[str, str] = m.groups()
+
+    # Load stimulus lists
+    pstimlist, astimlist = load_stimuli_lists(language_pair)
     if not pstimlist:
-        sys.exit(1)
+        exit_fail()
 
+    # Randomize audio stimulus list
+    cli.echo("Randomizing audio stimulus pairs.. ", nl=False)
     random.shuffle(astimlist)
+    cli.secho("OK.", fg="green")
 
-    if not validate_stimuli(pstimlist, astimlist):
-        sys.exit(1)
+    # Validate stimulus lists
+    if not validate_stimuli(pstimlist, astimlist, languages):
+        exit_fail()
 
+    # Build stimulus sequences
     stimseqs = build_stimulus_sequences(astimlist)
     print("Stimseqs original length:", len(stimseqs))
 
-    # @TODO - This code needs to be independent of hardcoded Eng/Cym and use
-    #         variable l1/l2 instead.
-    target_languages = ("Eng", "Cym")
+    # Generate and write experimental blocks
     blocks_to_generate = {
-        "block1": (("Eng", "neg"), target_languages),
-        "block2": (("Eng", "neg"), target_languages),
-        "block3": (("Cym", "pos"), target_languages),
-        "block4": (("Cym", "pos"), target_languages),
-        "block5": (("Cym", "neg"), target_languages),
-        "block6": (("Cym", "neg"), target_languages),
-        "block7": (("Eng", "pos"), target_languages),
-        "block8": (("Eng", "pos"), target_languages),
+        "block1": ((languages[0], "neg"), languages),
+        "block2": ((languages[0], "neg"), languages),
+        "block3": ((languages[1], "pos"), languages),
+        "block4": ((languages[1], "pos"), languages),
+        "block5": ((languages[1], "neg"), languages),
+        "block6": ((languages[1], "neg"), languages),
+        "block7": ((languages[0], "pos"), languages),
+        "block8": ((languages[0], "pos"), languages),
     }
     for block_name, block_spec in blocks_to_generate.items():
-        cli.echo(f"Generating block '{block_name}'... ", nl=False)
+        # Generate block
+        cli.echo(f"Generating block '{block_name}'... ")
+        cli.secho("  i ", fg="blue", nl=False)
+        cli.secho(f"Go conditions: {block_spec[0]}")
         block, stimseqs = make_block(*block_spec, stimseqs)
-        cli.secho("OK.", fg="green")
+        cli.secho("  OK ", fg="green", nl=False)
+        cli.echo("Block generated successfully.")
+        # Write block
         cli.echo(f"Writing block '{block_name}' to file...")
         cli.secho("  i ", fg="blue", nl=False)
         cli.echo(f"Path of file: ./{block_name}.tsv")
@@ -216,36 +243,7 @@ def main(language_pair: str | None = None):
         cli.secho("  OK ", fg="green", nl=False)
         cli.echo("File written successfully.")
 
-    # block1, nstimseqs = make_block(("Eng", "neg"), ("Eng", "Cym"), stimseqs)
-    # print("Stimseqs after block1:", len(nstimseqs))
-    # block2, nstimseqs = make_block(("Eng", "neg"), ("Eng", "Cym"), nstimseqs)
-    # print("Stimseqs after block2:", len(nstimseqs))
-    # block3, nstimseqs = make_block(("Cym", "pos"), ("Eng", "Cym"), nstimseqs)
-    # print("Stimseqs after block3:", len(nstimseqs))
-    # block4, nstimseqs = make_block(("Cym", "pos"), ("Eng", "Cym"), nstimseqs)
-    # print("Stimseqs after block4:", len(nstimseqs))
-    # block5, nstimseqs = make_block(("Cym", "neg"), ("Eng", "Cym"), nstimseqs)
-    # print("Stimseqs after block5:", len(nstimseqs))
-    # block6, nstimseqs = make_block(("Cym", "neg"), ("Eng", "Cym"), nstimseqs)
-    # print("Stimseqs after block6:", len(nstimseqs))
-    # block7, nstimseqs = make_block(("Eng", "pos"), ("Eng", "Cym"), nstimseqs)
-    # print("Stimseqs after block7:", len(nstimseqs))
-    # block8, nstimseqs = make_block(("Eng", "pos"), ("Eng", "Cym"), nstimseqs)
-    # print("Stimseqs after block8:", len(nstimseqs))
-    # write_block("block1", block1)
-    # write_block("block2", block2)
-    # write_block("block3", block3)
-    # write_block("block4", block4)
-    # write_block("block5", block5)
-    # write_block("block6", block6)
-    # write_block("block7", block7)
-    # write_block("block8", block8)
-
-    # print("Stimseqs left over:", len(nstimseqs))
-
-    cli.secho("SUCCESS :)", fg="bright_green", bold=True)
-
-    sys.exit(0)
+    exit_success()
 
 
 if __name__ == "__main__":

@@ -106,7 +106,8 @@ def validate_pstimlist(
 
 
 def validate_astimlist(
-        astimlist: list[AudioStimulus]
+        astimlist: list[AudioStimulus],
+        languages: tuple[str, str]
         ) -> tuple[list[str], list[str]]:
     """Validate a list of AudioStimulus items."""
     errors: list[str] = []
@@ -136,10 +137,15 @@ def validate_astimlist(
             "Audio stimulus list codes too many languages: 2 expected, "
             f"{len(languages_coded)} given (namely {languages_coded!r})."
         )
+    if languages_coded != set(languages):
+        errors.append(
+            f"Coded languages do not conform to expectations: {set(languages)}"
+            f" expected, {languages_coded} given."
+        )
 
     # E Check balance of languages coded
     if len(languages_coded) >= 2:
-        l1, l2 = list(languages_coded)[:2]
+        l1, l2 = languages
         count_l1: int = len([x for x in astimlist if x.language == l1])
         count_l2: int = len([x for x in astimlist if x.language == l1])
         if count_l1 != count_l2:
@@ -300,7 +306,7 @@ def validate_astimlist(
 
     # W Check for filenames indicative of different language
     if len(languages_coded) >= 2:
-        l1, l2 = list(languages_coded)[:2]
+        l1, l2 = languages
         l1_l2: set[str] = {
             x.filename for x in astimlist
             if l1.lower() in x.filename.lower()
