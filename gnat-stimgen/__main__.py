@@ -2,6 +2,7 @@ import sys
 import random
 import re
 import click as cli
+import xlsxwriter
 from .datasets import get_audio_stimuli, get_picture_stimuli
 from .validation import validate_pstimlist, validate_astimlist
 from .types import PictureStimulus, AudioStimulus, StimulusSequence, BlockRow
@@ -145,21 +146,47 @@ def make_block(
 
 
 def write_block(name: str, rows: list[BlockRow]):
-    with open(f"./{name}.tsv", "w") as fh:
-        fh.write(
-            "goConditions\t"
-            "soundstimuli\t"
-            "sounddescription\t"
-            "soundcorrAns\t"
-            "lang_triggerID\t"
-            "imagestimuli\t"
-            "imagedescription\t"
-            "imagecorrAns\t"
-            "img_triggerId\n"
+    # Write as excel file
+    workbook = xlsxwriter.Workbook(f"./{name}.xlsx")
+    worksheet = workbook.add_worksheet()
+    worksheet.write_row(
+        0, 0,
+        (
+            "goConditions",
+            "soundstimuli",
+            "sounddescription",
+            "soundcorrAns",
+            "lang_triggerId",
+            "imagestimuli",
+            "imagedescription",
+            "imagecorrAns",
+            "img_triggerId"
         )
-        for row in rows:
-            fh.write(str(row))
-            fh.write("\n")
+    )
+    row_index = 1
+    for row in rows:
+        worksheet.write_row(
+            row_index, 0,
+            str(row).split("\t")
+        )
+        row_index += 1
+    workbook.close()
+    # Write as TSV file
+    # with open(f"./{name}.tsv", "w") as fh:
+    #     fh.write(
+    #         "goConditions\t"
+    #         "soundstimuli\t"
+    #         "sounddescription\t"
+    #         "soundcorrAns\t"
+    #         "lang_triggerID\t"
+    #         "imagestimuli\t"
+    #         "imagedescription\t"
+    #         "imagecorrAns\t"
+    #         "img_triggerId\n"
+    #     )
+    #     for row in rows:
+    #         fh.write(str(row))
+    #         fh.write("\n")
 
 
 def exit_fail():
@@ -238,7 +265,7 @@ def main(language_pair: str | None = None):
         # Write block
         cli.echo(f"Writing block '{block_name}' to file...")
         cli.secho("  i ", fg="blue", nl=False)
-        cli.echo(f"Path of file: ./{block_name}.tsv")
+        cli.echo(f"Path of file: ./{block_name}.xlsx")
         write_block(block_name, block)
         cli.secho("  OK ", fg="green", nl=False)
         cli.echo("File written successfully.")
