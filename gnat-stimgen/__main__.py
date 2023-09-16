@@ -137,7 +137,7 @@ def make_block(
                    ):
                     afnames_drawn.add(stimseq.first.filename)
                     pfnames_drawn.add(stimseq.second.filename)
-                    rows.append(BlockRow(stimseq, condition, (l1, l2)))
+                    rows.append(BlockRow(stimseq, condition, languages))
                     stimseqs.remove(stimseq)
                     break
 

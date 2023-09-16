@@ -77,12 +77,24 @@ class BlockRow(NamedTuple):
         return "None"
 
     @property
+    def block_triggerID(self) -> int:
+        if self.condition == (self.languages[0], "pos"):
+            return 1
+        if self.condition == (self.languages[0], "neg"):
+            return 2
+        if self.condition == (self.languages[1], "pos"):
+            return 3
+        if self.condition == (self.languages[1], "neg"):
+            return 4
+        return 9  # 9 as error sentinel (never used in the GNAT experiment)
+
+    @property
     def lang_triggerID(self) -> int:
         if self.stimseq.first.language == self.languages[0]:
             return 1
-        elif self.stimseq.first.language == self.languages[1]:
+        if self.stimseq.first.language == self.languages[1]:
             return 2
-        return 5  # 5 as error sentinel (never used in the GNAT experiment)
+        return 9  # 9 as error sentinel (never used in the GNAT experiment)
 
     @property
     def imagestimuli(self) -> str:
@@ -100,18 +112,33 @@ class BlockRow(NamedTuple):
 
     @property
     def img_triggerID(self) -> int:
-        if self.stimseq.second.valence == "pos":
-            return int(f"{self.lang_triggerID}1")
-        elif self.stimseq.second.valence == "neg":
-            return int(f"{self.lang_triggerID}2")
-        else:
-            return int(f"{self.lang_triggerID}5")
+        if self.stimseq.first.language == self.languages[0]:  # Eng
+            if self.stimseq.second.valence == "pos":  # EngPosPic
+                return 3
+            if self.stimseq.second.valence == "neg":  # EngNegPic
+                return 5
+        if self.stimseq.first.language == self.languages[1]:  # Cym
+            if self.stimseq.second.valence == "pos":  # CymPosPic
+                return 4
+            if self.stimseq.second.valence == "neg":  # CymNegPic
+                return 6
+        return 9  # 9 as error sentinel (never used in the GNAT experiment)
+        # if self.stimseq.second.valence == "pos":
+        #     return int(f"{self.lang_triggerID}1")
+        # elif self.stimseq.second.valence == "neg":
+        #     return int(f"{self.lang_triggerID}2")
+        # else:
+        #     return int(f"{self.lang_triggerID}5")
 
     def __str__(self) -> str:
         return (
             f"{self.condition[0]}/{self.condition[1]}"
-            f"\t{self.soundstimuli}\t{self.sounddescription}"
-            f"\t{self.soundcorrAns}\t{self.lang_triggerID}"
-            f"\t{self.imagestimuli}\t{self.imagedescription}"
-            f"\t{self.imagecorrAns}\t{self.img_triggerID}"
+            f"\t{self.soundstimuli}"
+            f"\t{self.sounddescription}"
+            f"\t{self.soundcorrAns}"
+            f"\t{self.block_triggerID}{self.lang_triggerID}"
+            f"\t{self.imagestimuli}"
+            f"\t{self.imagedescription}"
+            f"\t{self.imagecorrAns}"
+            f"\t{self.block_triggerID}{self.img_triggerID}"
         )
