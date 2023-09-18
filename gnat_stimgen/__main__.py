@@ -156,11 +156,11 @@ def write_block(name: str, rows: list[BlockRow]):
             "soundstimuli",
             "sounddescription",
             "soundcorrAns",
-            "lang_triggerId",
+            "lang_triggerID",
             "imagestimuli",
             "imagedescription",
             "imagecorrAns",
-            "img_triggerId"
+            "img_triggerID"
         )
     )
     row_index = 1
