@@ -141,6 +141,12 @@ def make_block(
                     rows.append(BlockRow(stimseq, condition, languages))
                     stimseqs.remove(stimseq)
                     break
+        if len(rows) % 20 != 0:
+            cli.secho("  ERROR: ", fg="red", nl=False)
+            cli.echo(f"Unable to find more suitable items for condition {pattern}.")
+            with open("./overflow.txt", "w+") as fh:
+                fh.write(repr(stimseqs))
+            # return (rows, stimseqs)
 
     return (rows, stimseqs)
 
@@ -231,9 +237,9 @@ def main(language_pair: str | None = None):
         exit_fail()
 
     # Randomize audio stimulus list
-    cli.echo("Randomizing audio stimulus pairs.. ", nl=False)
-    random.shuffle(astimlist)
-    cli.secho("OK.", fg="green")
+    # cli.echo("Randomizing audio stimulus pairs.. ", nl=False)
+    # random.shuffle(astimlist)
+    # cli.secho("OK.", fg="green")
 
     # Validate stimulus lists
     if not validate_stimuli(pstimlist, astimlist, languages):
@@ -241,7 +247,7 @@ def main(language_pair: str | None = None):
 
     # Build stimulus sequences
     stimseqs = build_stimulus_sequences(astimlist)
-    print("Stimseqs original length:", len(stimseqs))
+    # print("Stimseqs original length:", len(stimseqs))
 
     # Generate and write experimental blocks
     blocks_to_generate = {
@@ -269,6 +275,15 @@ def main(language_pair: str | None = None):
         write_block(block_name, block)
         cli.secho("  OK ", fg="green", nl=False)
         cli.echo("File written successfully.")
+
+    # Package leftovers...
+    leftovers = list()
+    if stimseqs:
+        for stimseq in stimseqs:
+            condition = ("Lang", "Val")
+            languages = ("L1", "L2")
+            leftovers.append(BlockRow(stimseq, condition, languages))
+    write_block("leftovers", leftovers)
 
     exit_success()
 
