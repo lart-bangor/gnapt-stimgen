@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "gnat-stimgen"
-version = "0.1.1"
+version = "0.1.2"
 description = "Stimulus generator for the Go-No Go Association Task used for L'ART's 2023/2024 experiments."
 authors = ["Florian <florian@florian.me.uk>"]
 license = "Apache-2.0"

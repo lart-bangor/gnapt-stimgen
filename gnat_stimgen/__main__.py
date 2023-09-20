@@ -144,8 +144,8 @@ def make_block(
         if len(rows) % 20 != 0:
             cli.secho("  ERROR: ", fg="red", nl=False)
             cli.echo(f"Unable to find more suitable items for condition {pattern}.")
-            with open("./overflow.txt", "w+") as fh:
-                fh.write(repr(stimseqs))
+            # with open("./overflow.txt", "w+") as fh:
+            #     fh.write(repr(stimseqs))
             # return (rows, stimseqs)
 
     return (rows, stimseqs)
