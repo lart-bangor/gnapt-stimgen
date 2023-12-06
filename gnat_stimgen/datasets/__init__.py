@@ -17,7 +17,7 @@ KNOWN_LANGUAGES: Final[tuple[str, ...]] = (
 
 KNOWN_LANGUAGE_PAIRS: Final[tuple[str, ...]] = (
     "EngCym",
-    # "GerLtz",
+    "GerLtz",
     # "ItaLmo",
 )
 
