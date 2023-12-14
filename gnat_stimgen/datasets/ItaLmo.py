@@ -21,7 +21,7 @@ pstimlist: list[PictureStimulus] = [
     PictureStimulus("pos13.jpg", "Flowers in a meadow", "pos"),
     PictureStimulus("pos14.jpg", "Broad-leaved green grass",         "pos"),
     PictureStimulus("pos15.jpg", "Beach shore with children and swans",  "pos"),
-    PictureStimulus("pos16.jpg", "Dad in pool lifts daughter",        "pos"),
+    PictureStimulus("pos16.jpg", "Tulips in the grass",        "pos"),
     PictureStimulus("pos17.jpg", "Airborne parasailor near beach",    "pos"),
     PictureStimulus("pos18.jpg", "Flower stall at market",            "pos"),
     PictureStimulus("pos19.jpg", "Toddler pushes toy car on lawn",    "pos"),
