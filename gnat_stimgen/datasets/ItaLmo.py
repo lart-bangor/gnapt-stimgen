@@ -6,11 +6,11 @@ pstimlist: list[PictureStimulus] = [
     # POSITIVE PICTURE STIMULI
     #               Filename,    Description,                     Valence
     PictureStimulus("pos01.jpg", "Ladybird",                 "pos"),
-    PictureStimulus("pos02.jpg", "Turtle on straw", "pos"),
+    PictureStimulus("pos02.jpg", "Land turtle on grass/straw", "pos"),
     PictureStimulus("pos03.jpg", "Monkeys in tree",             "pos"),
-    PictureStimulus("pos04.jpg", "Dog in snow looks at camera",   "pos"),
-    PictureStimulus("pos05.jpg", "Tulips and roses for sale",      "pos"),
-    PictureStimulus("pos06.jpg", "Turtle swims past reef",        "pos"),
+    PictureStimulus("pos04.jpg", "Peacock",   "pos"),
+    PictureStimulus("pos05.jpg", "Sea horses",      "pos"),
+    PictureStimulus("pos06.jpg", "Child with toy car",        "pos"),
     PictureStimulus("pos07.jpg", "Peacock with blumage",          "pos"),
     PictureStimulus("pos08.jpg", "Tortoise on straw",             "pos"),
     PictureStimulus("pos09.jpg", "Cat looks to right",            "pos"),
