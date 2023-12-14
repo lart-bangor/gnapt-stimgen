@@ -80,7 +80,7 @@ pstimlist: list[PictureStimulus] = [
     PictureStimulus("neg26.jpg", "Man rummaging in waste bin",                         "neg"),
     PictureStimulus("neg27.jpg", "People sleeping on urban public passage",              "neg"),
     PictureStimulus("neg28.jpg", "Coffins",               "neg"),
-    PictureStimulus("neg29.jpg", "???????????????????????????????????????????????????????",            "neg"),
+    PictureStimulus("neg29.jpg", "Scrap metal on lawn",            "neg"),
     PictureStimulus("neg30.jpg", "Car accident, victim and rescuers", "neg"),
     #               Filename,    Description,                            Valence
     PictureStimulus("neg31.jpg", "Filthy blue toilet",                         "neg"),
