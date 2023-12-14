@@ -5,9 +5,9 @@ from ..types import AudioStimulus, PictureStimulus
 pstimlist: list[PictureStimulus] = [
     # POSITIVE PICTURE STIMULI
     #               Filename,    Description,                     Valence
-    PictureStimulus("pos01.jpg", "Duck in water",                 "pos"),
-    PictureStimulus("pos02.jpg", "Cats in cardboard box snuggle", "pos"),
-    PictureStimulus("pos03.jpg", "Cats in plant pot",             "pos"),
+    PictureStimulus("pos01.jpg", "Ladybird",                 "pos"),
+    PictureStimulus("pos02.jpg", "Turtle on straw", "pos"),
+    PictureStimulus("pos03.jpg", "Monkeys in tree",             "pos"),
     PictureStimulus("pos04.jpg", "Dog in snow looks at camera",   "pos"),
     PictureStimulus("pos05.jpg", "Tulips and roses for sale",      "pos"),
     PictureStimulus("pos06.jpg", "Turtle swims past reef",        "pos"),
