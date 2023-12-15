@@ -7,7 +7,7 @@ pstimlist: list[PictureStimulus] = [
     #               Filename,    Description,                     Valence
     PictureStimulus("pos01.jpg", "Ladybird",                 "pos"),
     PictureStimulus("pos02.jpg", "Land turtle on grass/straw", "pos"),
-    PictureStimulus("pos03.jpg", "Monkeys in tree",             "pos"),
+    PictureStimulus("pos03.jpg", "2 Monkeys in tree",             "pos"),
     PictureStimulus("pos04.jpg", "Peacock with wheel tail",   "pos"),
     PictureStimulus("pos05.jpg", "Sea horses",      "pos"),
     PictureStimulus("pos06.jpg", "Toddler pushes toy car on lawn",        "pos"),
