@@ -1,5 +1,3 @@
-
-
 """Dataset for ItaLmo stimuli."""
 from ..types import AudioStimulus, PictureStimulus
 
