@@ -188,8 +188,8 @@ astimlist: list[AudioStimulus] = [
     AudioStimulus("Lmo36.wav", "Moon",                       "Lmo", [pstimdict["pos06.jpg"], pstimdict["pos16.jpg"], pstimdict["pos26.jpg"], pstimdict["pos36.jpg"]], [pstimdict["neg06.jpg"], pstimdict["neg16.jpg"], pstimdict["neg26.jpg"], pstimdict["neg36.jpg"]]),
     AudioStimulus("Lmo37.wav", "Knife",                  "Lmo", [pstimdict["pos07.jpg"], pstimdict["pos17.jpg"], pstimdict["pos27.jpg"], pstimdict["pos37.jpg"]], [pstimdict["neg07.jpg"], pstimdict["neg17.jpg"], pstimdict["neg27.jpg"], pstimdict["neg37.jpg"]]),
     AudioStimulus("Lmo38.wav", "Tool",                 "Lmo", [pstimdict["pos08.jpg"], pstimdict["pos18.jpg"], pstimdict["pos28.jpg"], pstimdict["pos38.jpg"]], [pstimdict["neg08.jpg"], pstimdict["neg18.jpg"], pstimdict["neg28.jpg"], pstimdict["neg38.jpg"]]),
-    AudioStimulus("Lmo39.wav", "Carpenter",                 "Lmo", [pstimdict["pos09.jpg"], pstimdict["pos19.jpg"], pstimdict["pos29.jpg"], pstimdict["pos39.jpg"]], [pstimdict["neg09.jpg"], pstimdict["neg19.jpg"], pstimdict["neg29.jpg"], pstimdict["neg39.jpg"]]),
-    AudioStimulus("Lmo40.wav", "Arm",                       "Lmo", [pstimdict["pos10.jpg"], pstimdict["pos20.jpg"], pstimdict["pos30.jpg"], pstimdict["pos40.jpg"]], [pstimdict["neg10.jpg"], pstimdict["neg20.jpg"], pstimdict["neg30.jpg"], pstimdict["neg40.jpg"]]),
+    AudioStimulus("Lmo39.wav", "Hat",                 "Lmo", [pstimdict["pos09.jpg"], pstimdict["pos19.jpg"], pstimdict["pos29.jpg"], pstimdict["pos39.jpg"]], [pstimdict["neg09.jpg"], pstimdict["neg19.jpg"], pstimdict["neg29.jpg"], pstimdict["neg39.jpg"]]),
+    AudioStimulus("Lmo40.wav", "Glass/Cup",                       "Lmo", [pstimdict["pos10.jpg"], pstimdict["pos20.jpg"], pstimdict["pos30.jpg"], pstimdict["pos40.jpg"]], [pstimdict["neg10.jpg"], pstimdict["neg20.jpg"], pstimdict["neg30.jpg"], pstimdict["neg40.jpg"]]),
 ]
 
 astimdict: dict[str, AudioStimulus] = {
