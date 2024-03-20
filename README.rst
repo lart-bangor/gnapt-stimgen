@@ -8,7 +8,7 @@ experiments.
 Installation
 ------------
 
-Just download the :code:`gnapt-stimgen.exe` from the GitHub repo's releases and
+Just download the :code:`gnat-stimgen.exe` from the GitHub repo's releases and
 place it wherever is convenient, then run it from the command line as shown
 below. No installation necessary.
 
@@ -16,7 +16,7 @@ below. No installation necessary.
 Usage
 -----
 
-:code:`gnapt-stimgen.exe [OPTIONS] [LANGUAGE_PAIR]`
+:code:`gnat-stimgen.exe [OPTIONS] [LANGUAGE_PAIR]`
 
 Arguments:
 ^^^^^^^^^^
